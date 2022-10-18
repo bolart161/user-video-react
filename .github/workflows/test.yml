@@ -1,0 +1,29 @@
+name: deploy-pipeline
+
+on:
+  push:
+    branches: [ dev, test, demo ]
+jobs:
+  staging:
+    runs-on: label-1
+    env:
+      A: "AAAA"
+      COOKIE_SECRET: ${{ secrets.SECRET }}
+      HELLO: ${{ secrets.HELLO }}
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"  # ${{ steps.extract_branch.outputs.branch }}
+
+      - name: Deploy staging
+        shell: bash
+        run: |
+          echo $HELLO
+          echo $SECRET
+          echo $A
+        env:
+          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
