@@ -6,6 +6,7 @@ on:
 jobs:
   staging:
     runs-on: label-1
+    environment: dev
     env:
       A: "AAAA"
       COOKIE_SECRET: ${{ secrets.SECRET }}
